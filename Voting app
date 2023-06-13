@@ -1,0 +1,165 @@
+login as: ec2-user
+Authenticating with public key "imported-openssh-key"
+Last login: Tue Jun 13 16:11:11 2023 from 49.207.222.168
+
+       __|  __|_  )
+       _|  (     /   Amazon Linux 2 AMI
+      ___|\___|___|
+
+https://aws.amazon.com/amazon-linux-2/
+21 package(s) needed for security, out of 30 available
+Run "sudo yum update" to apply all updates.
+[ec2-user@ip-172-31-11-132 ~]$ sudo su -
+Last login: Tue Jun 13 16:11:41 UTC 2023 on pts/0
+[root@ip-172-31-11-132 ~]# cd /root/
+[root@ip-172-31-11-132 ~]# ls
+applicn1  kubernetes-training
+[root@ip-172-31-11-132 ~]# ls -lrth
+total 8.0K
+drwxr-xr-x 20 root root 4.0K Jun  5 05:33 kubernetes-training
+-rw-r--r--  1 root root  271 Jun 13 16:14 applicn1
+[root@ip-172-31-11-132 ~]# git clone  https://github.com/ashishrpandey/example-v                                                                             oting-app
+Cloning into 'example-voting-app'...
+remote: Enumerating objects: 494, done.
+remote: Total 494 (delta 0), reused 0 (delta 0), pack-reused 494
+Receiving objects: 100% (494/494), 236.18 KiB | 11.25 MiB/s, done.
+Resolving deltas: 100% (179/179), done.
+[root@ip-172-31-11-132 ~]# ls -lrth
+total 8.0K
+drwxr-xr-x 20 root root 4.0K Jun  5 05:33 kubernetes-training
+-rw-r--r--  1 root root  271 Jun 13 16:14 applicn1
+drwxr-xr-x  8 root root  335 Jun 13 16:31 example-voting-app
+[root@ip-172-31-11-132 ~]# cd example-voting-app
+[root@ip-172-31-11-132 example-voting-app]# ls
+architecture.png  docker-compose-javaworker.yml  docker-compose.yml  k8s-specifications  MAINTAINERS  result  worker
+dockercloud.yml   docker-compose-simple.yml      docker-stack.yml    LICENSE             README.md    vote
+[root@ip-172-31-11-132 example-voting-app]# cd /root/example-voting-app/vote
+[root@ip-172-31-11-132 vote]# ll
+total 12
+-rw-r--r-- 1 root root 1123 Jun 13 16:31 app.py
+-rw-r--r-- 1 root root  557 Jun 13 16:31 Dockerfile
+-rw-r--r-- 1 root root   21 Jun 13 16:31 requirements.txt
+drwxr-xr-x 3 root root   25 Jun 13 16:31 static
+drwxr-xr-x 2 root root   24 Jun 13 16:31 templates
+[root@ip-172-31-11-132 vote]# vi app.py
+[root@ip-172-31-11-132 vote]# kubectl apply -f .
+error: error reading [.]: recognized file extensions are [.json .yaml .yml]
+[root@ip-172-31-11-132 vote]# kubectl get all
+NAME                          READY   STATUS             RESTARTS   AGE
+pod/applicn1-224n8            0/1     ImagePullBackOff   0          19m
+pod/db-b54cd94f4-6tbtd        1/1     Running            0          28h
+pod/kubia-manual              1/1     Running            0          7d12h
+pod/my-app-2wnds              0/1     ImagePullBackOff   0          26h
+pod/nginx-katta               1/1     Running            0          8d
+pod/redis-868d64d78-bmvr7     1/1     Running            0          28h
+pod/result-5d57b59f4b-lqcsp   1/1     Running            1          28h
+pod/vote-94849dc97-cb2tn      1/1     Running            0          28h
+pod/worker-dd46d7584-hsqtk    1/1     Running            1          28h
+
+NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/db           ClusterIP   10.110.135.138   <none>        5432/TCP         28h
+service/kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          8d
+service/redis        ClusterIP   10.103.247.134   <none>        6379/TCP         28h
+service/result       NodePort    10.104.12.232    <none>        5001:31001/TCP   28h
+service/vote         NodePort    10.99.55.144     <none>        5000:31000/TCP   28h
+
+NAME                      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/applicn1   1         1         0       1            0           <none>          19m
+daemonset.apps/my-app     1         1         0       1            0           <none>          26h
+
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/db       1/1     1            1           28h
+deployment.apps/redis    1/1     1            1           28h
+deployment.apps/result   1/1     1            1           28h
+deployment.apps/vote     1/1     1            1           28h
+deployment.apps/worker   1/1     1            1           28h
+
+NAME                                DESIRED   CURRENT   READY   AGE
+replicaset.apps/db-b54cd94f4        1         1         1       28h
+replicaset.apps/redis-868d64d78     1         1         1       28h
+replicaset.apps/result-5d57b59f4b   1         1         1       28h
+replicaset.apps/vote-94849dc97      1         1         1       28h
+replicaset.apps/worker-dd46d7584    1         1         1       28h
+[root@ip-172-31-11-132 vote]# kubectl get all
+NAME                          READY   STATUS             RESTARTS   AGE
+pod/applicn1-224n8            0/1     ImagePullBackOff   0          19m
+pod/db-b54cd94f4-6tbtd        1/1     Running            0          28h
+pod/kubia-manual              1/1     Running            0          7d12h
+pod/my-app-2wnds              0/1     ImagePullBackOff   0          26h
+pod/nginx-katta               1/1     Running            0          8d
+pod/redis-868d64d78-bmvr7     1/1     Running            0          28h
+pod/result-5d57b59f4b-lqcsp   1/1     Running            1          28h
+pod/vote-94849dc97-cb2tn      1/1     Running            0          28h
+pod/worker-dd46d7584-hsqtk    1/1     Running            1          28h
+
+NAME                 TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+service/db           ClusterIP   10.110.135.138   <none>        5432/TCP         28h
+service/kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          8d
+service/redis        ClusterIP   10.103.247.134   <none>        6379/TCP         28h
+service/result       NodePort    10.104.12.232    <none>        5001:31001/TCP   28h
+service/vote         NodePort    10.99.55.144     <none>        5000:31000/TCP   28h
+
+NAME                      DESIRED   CURRENT   READY   UP-TO-DATE   AVAILABLE   NODE SELECTOR   AGE
+daemonset.apps/applicn1   1         1         0       1            0           <none>          19m
+daemonset.apps/my-app     1         1         0       1            0           <none>          26h
+
+NAME                     READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/db       1/1     1            1           28h
+deployment.apps/redis    1/1     1            1           28h
+deployment.apps/result   1/1     1            1           28h
+deployment.apps/vote     1/1     1            1           28h
+deployment.apps/worker   1/1     1            1           28h
+
+NAME                                DESIRED   CURRENT   READY   AGE
+replicaset.apps/db-b54cd94f4        1         1         1       28h
+replicaset.apps/redis-868d64d78     1         1         1       28h
+replicaset.apps/result-5d57b59f4b   1         1         1       28h
+replicaset.apps/vote-94849dc97      1         1         1       28h
+replicaset.apps/worker-dd46d7584    1         1         1       28h
+[root@ip-172-31-11-132 vote]#
+
+[root@ip-172-31-11-132 vote]# kubectl get pods
+NAME                      READY   STATUS             RESTARTS   AGE
+applicn1-224n8            0/1     ImagePullBackOff   0          21m
+db-b54cd94f4-6tbtd        1/1     Running            0          28h
+kubia-manual              1/1     Running            0          7d12h
+my-app-2wnds              0/1     ErrImagePull       0          26h
+nginx-katta               1/1     Running            0          8d
+redis-868d64d78-bmvr7     1/1     Running            0          28h
+result-5d57b59f4b-lqcsp   1/1     Running            1          28h
+vote-94849dc97-cb2tn      1/1     Running            0          28h
+worker-dd46d7584-hsqtk    1/1     Running            1          28h
+[root@ip-172-31-11-132 vote]# kubectl delete pod worker-dd46d7584-hsqtk
+pod "worker-dd46d7584-hsqtk" deleted
+[root@ip-172-31-11-132 vote]# kubectl get pods
+NAME                      READY   STATUS             RESTARTS   AGE
+applicn1-224n8            0/1     ImagePullBackOff   0          22m
+db-b54cd94f4-6tbtd        1/1     Running            0          28h
+kubia-manual              1/1     Running            0          7d12h
+my-app-2wnds              0/1     ImagePullBackOff   0          26h
+nginx-katta               1/1     Running            0          8d
+redis-868d64d78-bmvr7     1/1     Running            0          28h
+result-5d57b59f4b-lqcsp   1/1     Running            1          28h
+vote-94849dc97-cb2tn      1/1     Running            0          28h
+worker-dd46d7584-bkqrr    1/1     Running            0          32s
+[root@ip-172-31-11-132 vote]#
+Observation: After delete the vote pod , new pod Created and App still working but now its showing 
+new pod in app
+
+Observation : after deletion worker pod , new pod deploy . But it didn’t impact vote and Result app
+As we seen try to seen the log its showing connected
+[root@ip-172-31-11-132 vote]# kubectl delete pod db-b54cd94f4-6tbtd
+pod "db-b54cd94f4-6tbtd" deleted
+[root@ip-172-31-11-132 vote]# kubectl get pods
+NAME                      READY   STATUS             RESTARTS   AGE
+applicn1-224n8            0/1     ImagePullBackOff   0          25m
+db-b54cd94f4-tzw4d        1/1     Running            0          43s
+kubia-manual              1/1     Running            0          7d12h
+my-app-2wnds              0/1     ImagePullBackOff   0          26h
+nginx-katta               1/1     Running            0          8d
+redis-868d64d78-bmvr7     1/1     Running            0          28h
+result-5d57b59f4b-lqcsp   1/1     Running            2          28h
+vote-94849dc97-cb2tn      1/1     Running            0          28h
+worker-dd46d7584-bkqrr    1/1     Running            1          2m51s
+Observation : After delete db pod y, observed both worker and result app get restart and Result app 
+stop working
