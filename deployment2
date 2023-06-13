@@ -1,0 +1,41 @@
+Below mentioned all five services
+to check all nodes are up and running
+[root@ip-172-31-11-132 ~]# kubectl get nodes
+NAME                                               STATUS   ROLES    AGE   VERSI                                                                             ON
+ip-172-31-0-7.ap-southeast-1.compute.internal      Ready    <none>   8d    v1.18                                                                             .5
+ip-172-31-11-132.ap-southeast-1.compute.internal   Ready    master   8d    v1.18                                                                             .5
+[root@ip-172-31-11-132 ~]#
+
+[root@ip-172-31-11-132 ~]# kubectl get deployments
+NAME     READY   UP-TO-DATE   AVAILABLE   AGE
+db       1/1     1            1           28h
+redis    1/1     1            1           28h
+result   1/1     1            1           28h
+vote     1/1     1            1           28h
+worker   1/1     1            1           28h
+Tocheck the pod status need to run below command
+[root@ip-172-31-11-132 ~]# kubectl get pods
+NAME                      READY   STATUS             RESTARTS   AGE
+db-b54cd94f4-tzw4d        1/1     Running            0          9m50s
+kubia-manual              1/1     Running            0          7d12h
+my-app-2wnds              0/1     ImagePullBackOff   0          26h
+nginx-katta               1/1     Running            0          8d
+redis-868d64d78-bmvr7     1/1     Running            0          28h
+result-5d57b59f4b-lqcsp   1/1     Running            2          28h
+vote-94849dc97-cb2tn      1/1     Running            0          28h
+worker-dd46d7584-bkqrr    1/1     Running            1          11m
+service connects to the pods using the concept called EndPoints OR Service End Points (SEP)
+[root@ip-172-31-11-132 ~]# kubectl get svc
+NAME         TYPE        CLUSTER-IP       EXTERNAL-IP   PORT(S)          AGE
+db           ClusterIP   10.110.135.138   <none>        5432/TCP         28h
+kubernetes   ClusterIP   10.96.0.1        <none>        443/TCP          8d
+redis        ClusterIP   10.103.247.134   <none>        6379/TCP         28h
+result       NodePort    10.104.12.232    <none>        5001:31001/TCP   28h
+vote         NodePort    10.99.55.144     <none>        5000:31000/TCP   28h
+[root@ip-172-31-11-132 ~]#  kubectl get ep
+NAME         ENDPOINTS              AGE
+db           192.168.196.208:5432   28h
+kubernetes   172.31.11.132:6443     8d
+redis        192.168.196.198:6379   28h
+result       192.168.196.199:80     28h
+vote         192.168.196.202:80     28h
